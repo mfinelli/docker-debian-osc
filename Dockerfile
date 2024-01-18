@@ -39,4 +39,5 @@ RUN \
   ./setup.py build && \
   ./setup.py install && \
   cd / && \
-  rm -rf /tmp/osc
+  rm -rf /tmp/osc && \
+  osc version
