@@ -26,7 +26,9 @@ RUN apt-get install -y \
   python3-cryptography \
   python3-rpm \
   python3-setuptools \
-  python3-urllib3
+  python3-urllib3 && \
+  rm -rf /var/lib/apt/lists/* && \
+  apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 COPY --from=downloader /osc /usr/src/osc
 
