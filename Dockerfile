@@ -21,6 +21,21 @@ RUN \
   tar xzvf osc.tar.gz --strip-components=1 && \
   rm osc.tar.gz
 
+FROM base as builder
+
+RUN apt-get install -y \
+  python3-cryptography \
+  python3-rpm \
+  python3-setuptools \
+  python3-urllib3
+
+COPY --from=downloader /osc /usr/src/osc
+
+RUN \
+  cd /usr/src/osc && \
+  ./setup.py build && \
+  ./setup.py install
+
 FROM base
 
 LABEL org.opencontainers.image.source \
@@ -29,20 +44,11 @@ LABEL org.opencontainers.image.source \
 RUN apt-get install -y \
   python3-cryptography \
   python3-rpm \
-  python3-setuptools \
   python3-urllib3 && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 COPY --from=downloader /osc /usr/src/osc
-
-RUN \
-  cd /tmp && \
-  cp -R /usr/src/osc . && \
-  cd osc && \
-  ./setup.py build && \
-  ./setup.py install && \
-  cd / && \
-  rm -rf /tmp/osc
+COPY --from=builder /usr/local /usr/local
 
 USER 1000
