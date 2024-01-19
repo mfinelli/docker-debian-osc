@@ -2,6 +2,10 @@ ARG OSC_VERSION=1.5.1
 
 FROM debian:bookworm as base
 WORKDIR /osc
+
+RUN groupadd --gid 1000 osc && \
+  useradd --uid 1000 --gid osc --shell /bin/bash --create-home osc
+
 RUN apt-get update
 
 FROM base as downloader
@@ -40,3 +44,5 @@ RUN \
   ./setup.py install && \
   cd / && \
   rm -rf /tmp/osc
+
+USER 1000
