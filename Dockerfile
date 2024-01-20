@@ -42,6 +42,7 @@ LABEL org.opencontainers.image.source \
   https://github.com/mfinelli/docker-debian-osc
 
 RUN apt-get install -y \
+  ca-certificates \
   python3-cryptography \
   python3-rpm \
   python3-urllib3 && \
