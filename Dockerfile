@@ -1,4 +1,4 @@
-ARG OSC_VERSION=1.10.1
+ARG OSC_VERSION=1.11.1
 
 FROM debian:bookworm as base
 WORKDIR /osc
